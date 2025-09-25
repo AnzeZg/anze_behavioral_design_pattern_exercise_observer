@@ -23,5 +23,15 @@ class HeatAlert(Observer):
         - Format temperature to 1 decimal place (.1f)
         - Call self.notifier.send(message) to send the alert
         """
-        # TODO: Your implementation here
-        pass
+        if data.temperature_c >= self.threshold_c:
+            self.notifier.send(f"Heat alert: {data.temperature_c:.1f}°C")
+
+class HumidityAlert(Observer):
+    "Sends an alert when a humidity threshold is reached"
+    def __init__(self, notifier, threshold_h: float = 75.0) -> None:
+        self.threshold_h = threshold_h
+        self.notifier = notifier
+
+    def update(self, data: WeatherData) -> None:
+        if data.humidity_pct >= self.threshold_h:
+            self.notifier.send(f"Humidity alert: {data.humidity_pct:.0f}%")
