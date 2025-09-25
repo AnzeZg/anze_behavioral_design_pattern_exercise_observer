@@ -1,6 +1,6 @@
 from domain.weather import WeatherStation
 from observers.current_display import CurrentConditionsDisplay
-from observers.alerting import HeatAlert
+from observers.alerting import HeatAlert, HumidityAlert
 from infrastructure.notifiers import PrintNotifier
 
 
@@ -22,8 +22,10 @@ def build_weather_system() -> WeatherStation:
     # Create observers
     display = CurrentConditionsDisplay()
     heat_alert = HeatAlert(PrintNotifier(), threshold_c=30.0)
+    humidity_alert = HumidityAlert(PrintNotifier(), threshold_pct=75)
 
     station.attach(display)
     station.attach(heat_alert)
+    station.attach(humidity_alert)
 
     return station
